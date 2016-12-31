@@ -4,5 +4,8 @@
 .DS_STORE
 log/*
 *.tar.gz
-piktur*/src/*
-piktur*/README.markdown
+/*/src/*
+/piktur**/*.html
+/piktur**/*.css
+/piktur**/*.js
+/*/README.markdown
