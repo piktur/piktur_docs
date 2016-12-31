@@ -1,6 +1,6 @@
 GIT
   remote: https://bitbucket.org/piktur/piktur.git
-  revision: 2b771b764e8568d6a10c1953fdd8ba157b7a254b
+  revision: 1fdb8d66e436083b1cb82dd9be610484f0840d0d
   branch: master
   specs:
     piktur (0.0.1)
