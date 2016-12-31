@@ -1,0 +1,8 @@
+.env
+.env.*
+.bundle
+.DS_STORE
+log/*
+*.tar.gz
+/*/src
+/*/README.markdown
