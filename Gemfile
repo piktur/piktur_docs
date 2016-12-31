@@ -3,7 +3,7 @@
 gh = 'https://github.com'
 bb = 'https://bitbucket.org'
 
-source 'https://rubygems.org'
+# source 'https://rubygems.org'
 source ENV['GEM_SOURCE']
 
 ruby '2.3.0'
@@ -18,6 +18,6 @@ gem 'piktur',                   git:    "#{bb}/piktur/piktur.git",
                                 branch: 'master'
 # @!endgroup
 
-# group :production do
-#   gem 'newrelic_rpm'
-# end
+group :production do
+  gem 'newrelic_rpm'
+end

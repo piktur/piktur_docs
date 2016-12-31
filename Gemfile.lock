@@ -35,7 +35,6 @@ PATH
       rack (~> 1.6.5)
 
 GEM
-  remote: https://rubygems.org/
   remote: https://gems.piktur.io/
   specs:
     activesupport (4.2.5.1)
@@ -124,6 +123,7 @@ PLATFORMS
   ruby
 
 DEPENDENCIES
+  newrelic_rpm
   piktur!
   piktur_docs!
 
