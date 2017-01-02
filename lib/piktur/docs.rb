@@ -18,6 +18,14 @@ require 'rack/auth/jwt'
 
 require_relative '../../app/policies/docs_policy'
 
+# Define `UseProxy` per authorized `User` subclass. The proxy object supports authentication
+# without a database connection. Include **JSON Web Token (JWT)** in params `?token=<token>` or
+# header `Authorization: Bearer <token>` to authenticate
+[:Admin].each do |klass|
+  klass = Object.const_set(klass, Class.new)
+  klass.extend ::Piktur::Security::Authentication::UserProxy
+end
+
 module Piktur
 
   # @note Run `rake yard:prepare` after deploy to fetch remote source.
