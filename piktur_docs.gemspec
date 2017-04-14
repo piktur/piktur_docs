@@ -1,8 +1,6 @@
 # frozen_string_literal: true
-# rubocop:disable Metrics/BlockLength
 
-$LOAD_PATH.push File.expand_path('./lib', __dir__),
-                File.expand_path('./app', __dir__)
+$LOAD_PATH.push File.expand_path('./lib', __dir__)
 
 # Maintain your gem's version:
 require 'piktur/docs/version'
@@ -27,7 +25,14 @@ Gem::Specification.new do |s|
   s.require_paths = %w(lib app)
 
   # @!group Piktur
-  s.add_dependency 'piktur',                            '0.0.1'
+  # @see Gemfile
+  # s.add_dependency 'piktur_admin',                      '0.0.1'
+  # s.add_dependency 'piktur_api',                        '0.0.1'
+  # s.add_dependency 'piktur_blog',                       '0.0.1'
+  # s.add_dependency 'piktur_client',                     '0.0.1'
+  # s.add_dependency 'piktur_core',                       '0.0.1'
+  # s.add_dependency 'piktur_store',                      '0.0.1'
+  # s.add_dependency 'piktur',                            '0.0.1'
   # @!endgroup
 
   # @!group Framework
