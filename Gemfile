@@ -42,7 +42,7 @@ gem 'piktur_api',               git:     "#{bb}/piktur/piktur_api.git",
 #                                 branch:  'master',
 #                                 require: false
 gem 'piktur_core',              git:     "#{bb}/piktur/piktur_core.git",
-                                branch:  'develop',
+                                branch:  'assets',
                                 require: false
 # gem 'piktur_store',             git:     "#{bb}/piktur/piktur_store.git",
 #                                 branch:  'master',

@@ -21,7 +21,7 @@ module YARD
             # given to `included`. YARD will parse those and attach any generated
             # documentation to the current namespace at the instance level (unless
             # overridden with a @!scope directive)
-            parse_block(statement.last.last, namespace: namespace, scope: :instance)
+            parse_block(statement.last.last, scope: :instance)
           end
 
         end
@@ -37,7 +37,7 @@ module YARD
             # given to `class_methods`. YARD will parse those and attach any
             # generated documentation to the current namespace at the class
             # level (unless overridden with a @!scope directive)
-            parse_block(statement.last.last, namespace: namespace, scope: :class)
+            parse_block(statement.last.last, scope: :class)
           end
 
         end

@@ -1,17 +1,7 @@
 # frozen_string_literal: true
 
-$LOAD_PATH.push File.expand_path('./app', __dir__)
-
-require 'rubygems'
-require 'bundler'
-
-Bundler.setup
-Bundler.require :default, (ENV['RACK_ENV'] ||= 'development')
-
-require 'piktur/env'
-require 'active_support/core_ext/string/inflections'
+require_relative '../../config/environment.rb'
 require_relative './docs/security.rb'
-require_relative '../yard/lib/ext.rb'
 
 module Piktur
 
@@ -50,6 +40,7 @@ module Piktur
 --backtrace
 --debug
 --use-cache
+--no-private
 --embed-mixins
 --hide-void-return
 --markup-provider redcarpet
