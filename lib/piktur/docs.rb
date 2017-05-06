@@ -13,7 +13,7 @@ module Piktur
   #   /v1/admin/token?auth[email]=*&auth[password]=*
   #
   # @example Generate token from console
-  #   Knock::AuthToken.new(payload: Admin.first.to_token_payload)
+  #   Piktur::Security::JWT::Token.new(payload: User::Admin.first.to_jwt_claims)
   #
   module Docs
 
@@ -22,15 +22,18 @@ module Piktur
     ROOT = Pathname File.expand_path('../../', __dir__)
 
     # @return [Array]
-    LIBRARIES = [
-      'piktur_admin',
-      'piktur_api',
-      'piktur_blog',
-      'piktur_client',
-      'piktur_core',
-      'piktur_store',
-      'piktur'
-    ]
+    LIBRARIES = %w(
+      piktur
+      piktur_core
+      piktur_admin
+      piktur_api
+      piktur_blog
+      piktur_client
+      piktur_security
+      piktur_store
+      gem_server
+      webpack
+    ).freeze
 
     # @note frozen_string_literal seems to break this
     #   --single-db
@@ -75,7 +78,7 @@ README.markdown
         # @param [String] path
         # @return [Pathname]
         def _local_source(path)
-          Piktur.root.parent.join(path)
+          Pathname(Dir["#{ENV['DEV_HOME']}/*/{piktur/#{path},gems/#{path},#{path}}"][0])
         end
 
         # @param [String] str

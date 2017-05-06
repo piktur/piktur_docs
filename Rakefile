@@ -1,11 +1,6 @@
 require 'open3'
 require_relative './lib/piktur/docs.rb'
 
-# @return [String]
-def library_name(path)
-  path.split('/')[-1]
-end
-
 # @see YARD::CLI::YardoptsCommand#parse_arguments
 # @return [Array]
 def default_yardopts
@@ -27,21 +22,16 @@ def add_local_yardopts(path, options = [])
   end
 end
 
-library_names = []
-libraries     = []
-
+libraries = {}
 Piktur::Docs.libraries.each do |name, (libver)|
   # Access gem info with `libver.gemspec` ie. `libver.gemspec.version`
   next unless (path = libver.source_path)
-  library_names << name
-  libraries     << path
+  libraries[name] = path
 end
 
 namespace :yard do
-  libraries.each do |path|
-    name = library_name(path)
-
-    desc "Generate YARD Documentation for #{library_name(path)}"
+  libraries.each do |name, path|
+    desc "Generate YARD Documentation for #{name}"
     task name do
       # yardoc [options] [source_files [- extra_files]]
       # cmd = "yardoc #{default_yardopts.join(' ')} #{default_files.join(' ')}"
@@ -54,6 +44,6 @@ namespace :yard do
 
   desc 'Generate YARD Documentation for all libraries'
   task :all do
-    library_names.each { |lib| Rake::Task["yard:#{lib}"].invoke }
+    libraries.each_key { |name| Rake::Task["yard:#{name}"].invoke }
   end
 end

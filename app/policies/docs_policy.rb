@@ -5,7 +5,7 @@
 #   entity = Admin.new
 #   Pundit.authorize(entity, :docs, :authorized?)
 #
-class DocsPolicy < Piktur::Security::BasePolicy
+class DocsPolicy < Piktur::BasePolicy
 
   # @return [Boolean]
   def authorized?
