@@ -1,7 +1,7 @@
 # frozen_string_literal: true
 
 require_relative '../../config/environment.rb'
-require_relative './docs/security.rb'
+require 'piktur'
 
 module Piktur
 
@@ -17,45 +17,64 @@ module Piktur
   #
   module Docs
 
+    ::Piktur.configure do |c|
+      c.services = nil
+      c.finalize!
+    end
+
     # Return absolute path to docs directory
     # @return [Pathname]
-    ROOT = Pathname File.expand_path('../../', __dir__)
+    ROOT = Pathname(File.expand_path('../../', __dir__)).freeze
 
-    # @return [Array]
-    LIBRARIES = %w(
-      piktur
-      piktur_core
-      piktur_admin
-      piktur_api
-      piktur_blog
-      piktur_client
-      piktur_security
-      piktur_store
-      gem_server
-      webpack
-    ).freeze
+    # Return list of Piktur gem names
+    # @return [Array<String>]
+    GEMS = [
+      *Piktur.config.services.names,
+      'gem_server',
+      'webpack'
+    ].freeze
 
-    # @note frozen_string_literal seems to break this
-    #   --single-db
+    # @note `--single-db` flag seems to break when frozen_string_literal enabled
     # @return [String]
-    YARDOPTS = <<-EOS
---verbose
---backtrace
---debug
---use-cache
---no-private
---embed-mixins
---hide-void-return
---markup-provider redcarpet
---markup markdown
+    YARDOPTS = <<~EOS.chomp
+      --verbose
+      --backtrace
+      --debug
+      --use-cache
+      --no-private
+      --embed-mixins
+      --hide-void-return
+      --markup-provider redcarpet
+      --markup markdown
     EOS
 
-    FILES = <<-EOS
-lib/**/*.rb
-app/**/*.rb
--
-README.markdown
+    FILES = <<~EOS.chomp
+      lib/**/*.rb
+      app/**/*.rb
+      -
+      README.markdown
     EOS
+
+    # Polices access to Sidekiq::Web framework
+    # @example
+    #   entity = Admin.new
+    #   Pundit.authorize(entity, :docs, :authorized?)
+    class DocsPolicy < Piktur::BasePolicy
+
+      # @return [Boolean]
+      def authorized?
+        admin?
+      end
+
+    end
+
+    # Setup `UseProxy` for permitted entities. The proxy object supports authentication without a
+    # database connection.
+    #
+    # To **authenticate** include **JSON Web Token (JWT)** via
+    #   * url    `?token=<token>`
+    #   * header `Authorization: Bearer <token>`
+    [:Admin].each { |const| ::Piktur::UserProxy.call(const) }
 
     class << self
 
@@ -66,8 +85,8 @@ README.markdown
       #   YARD::Server::LibraryVersion
       # @return [{String=>[YARD::Server::LibraryVersion]}]
       def libraries
-        LIBRARIES.each_with_object({}) do |lib, a|
-          libver = YARD::Server::LibraryVersion.new(lib, nil, nil, :gem)
+        GEMS.each_with_object({}) do |lib, a|
+          libver = ::YARD::Server::LibraryVersion.new(lib, nil, nil, :gem)
           a[lib] = [libver]
         end
       end
@@ -78,13 +97,7 @@ README.markdown
         # @param [String] path
         # @return [Pathname]
         def _local_source(path)
-          Pathname(Dir["#{ENV['DEV_HOME']}/*/{piktur/#{path},gems/#{path},#{path}}"][0])
-        end
-
-        # @param [String] str
-        # @return [String]
-        def _namespace(str)
-          str.classify
+          Pathname(::Dir["#{ENV['DEV_HOME']}/*/{piktur/#{path},gems/#{path},#{path}}"][0])
         end
 
     end

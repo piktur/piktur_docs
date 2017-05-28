@@ -2,10 +2,11 @@
 
 require_relative './lib/piktur/docs'
 
-use Rack::Session::Cookie, secret: ENV['SECRET_KEY_BASE']
+use Rack::Session::Cookie, secret: ENV.fetch('SECRET_KEY_BASE')
 
-use Rack::Auth::JWT, :Admin, domain: 'https://api.piktur.io/v1/token' unless
-  ENV['RACK_ENV'] == 'development'
+if ENV.fetch('RACK_ENV', 'development') == 'production'
+  use(Rack::Auth::JWT, :Admin, domain: 'https://api.piktur.io/v1/token')
+end
 
 # @see https://github.com/lsegal/yard/blob/master/lib/yard/server/rack_middleware.rb
 #   YARD::Server::RackMiddleware

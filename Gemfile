@@ -6,7 +6,7 @@ bb = 'https://bitbucket.org'
 # source 'https://rubygems.org'
 source ENV['GEM_SOURCE']
 
-ruby '2.3.0'
+ruby ENV.fetch('RUBY_VERSION').sub('ruby-', '')
 
 gemspec name: 'piktur_docs'
 
@@ -29,15 +29,16 @@ end
 # @note The following libraries SHOULD NOT be loaded, they are required here to ensure a
 #   local copy of the source code is available to YARD.
 
-gem 'gem_server',               git:     "#{bb}/piktur/gem_server.git",
-                                branch:  'ebs',
-                                require: false
+# @todo Rack dependency version conflict
+# gem 'gem_server',               git:     "#{bb}/piktur/gem_server.git",
+#                                 branch:  'ebs',
+#                                 require: false
 
 gem 'piktur_admin',             git:     "#{bb}/piktur/piktur_admin.git",
                                 branch:  'webpack',
                                 require: false
 gem 'piktur_api',               git:     "#{bb}/piktur/piktur_api.git",
-                                branch:  'develop',
+                                branch:  'rails5',
                                 require: false
 # gem 'piktur_blog',              git:     "#{bb}/piktur/piktur_blog.git",
 #                                 branch:  'master',
@@ -46,8 +47,10 @@ gem 'piktur_api',               git:     "#{bb}/piktur/piktur_api.git",
 #                                 branch:  'master',
 #                                 require: false
 gem 'piktur_core',              git:     "#{bb}/piktur/piktur_core.git",
-                                branch:  'json',
+                                branch:  'rails5',
                                 require: false
+gem 'piktur_security',          git:    "#{bb}/piktur/piktur_security.git",
+                                branch: 'rails5'
 gem 'piktur_store',             git:     "#{bb}/piktur/piktur_store.git",
                                 branch:  'master',
                                 require: false
