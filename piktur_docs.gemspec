@@ -2,7 +2,7 @@
 
 $LOAD_PATH.push File.expand_path('./lib', __dir__)
 
-require 'piktur/docs/version'
+require_relative './lib/piktur/docs/version.rb'
 
 Gem::Specification.new do |s|
   s.name        = 'piktur_docs'
@@ -12,17 +12,18 @@ Gem::Specification.new do |s|
   s.homepage    = 'https://bitbucket.org/piktur/piktur_docs'
   s.summary     = 'Piktur a complete Portfolio Management System for Artists'
   s.description = 'Developer docs'
-  s.license = ''
-  s.files = Dir[
+  s.license     = ''
+  s.files       = Dir[
     '{config,lib}/**/*.rb',
     '.rubocop.yml',
     'config.ru',
     'piktur_docs.gemspec',
     'Procfile',
     'Rakefile',
-    'README.markdown'
+    'README.markdown',
+    base: __dir__
   ]
-  s.test_files = Dir['spec/**/*']
+  s.test_files    = Dir['spec/**/*', base: __dir__]
   s.require_paths = %w(lib)
 
   # @!group Piktur
@@ -37,4 +38,6 @@ Gem::Specification.new do |s|
   # @!endgroup
 
   s.add_dependency 'rack', '~> 2.0'
+
+  s.add_development_dependency 'pry', '~> 0.10'
 end

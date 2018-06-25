@@ -1,9 +1,19 @@
 # frozen_string_literal: true
 
 require_relative '../../config/environment.rb'
+
 require 'piktur'
+require 'piktur/security'
 
 module Piktur
+
+  eager_load!
+
+  Security.install
+
+  Piktur::Config.configure do |config|
+    config.services = %w(piktur piktur_core piktur_security)
+  end
 
   # @see https://bitbucket.org/piktur/piktur_core/issues/32 Git download example
   # @see https://bitbucket.org/snippets/piktur/84Bkj Piktur::Docs::App example
@@ -17,26 +27,21 @@ module Piktur
   #
   module Docs
 
-    ::Piktur.configure do |c|
-      c.services = nil
-      c.finalize!
-    end
-
     # Return absolute path to docs directory
     # @return [Pathname]
-    ROOT = Pathname(File.expand_path('../../', __dir__)).freeze
+    ROOT = Pathname.pwd.freeze
 
     # Return list of Piktur gem names
     # @return [Array<String>]
     GEMS = [
-      *Piktur.config.services.names,
+      *::Piktur.services&.names,
       'gem_server',
       'webpack'
     ].freeze
 
     # @note `--single-db` flag seems to break when frozen_string_literal enabled
     # @return [String]
-    YARDOPTS = <<~EOS.chomp
+    YARDOPTS = <<~SH.chomp
       --verbose
       --backtrace
       --debug
@@ -46,20 +51,20 @@ module Piktur
       --hide-void-return
       --markup-provider redcarpet
       --markup markdown
-    EOS
+    SH
 
-    FILES = <<~EOS.chomp
+    FILES = <<~YAML.chomp
       lib/**/*.rb
       app/**/*.rb
       -
       README.markdown
-    EOS
+    YAML
 
     # Polices access to Sidekiq::Web framework
     # @example
     #   entity = Admin.new
     #   Pundit.authorize(entity, :docs, :authorized?)
-    class DocsPolicy < Piktur::BasePolicy
+    class Policy < ::Policies::Base
 
       # @return [Boolean]
       def authorized?
@@ -81,8 +86,10 @@ module Piktur
       # @example Access gem info
       #   LibraryVersion#gemspec
       #   LibraryVersion#gemspec.version
+      #
       # @see https://github.com/lsegal/yard/blob/master/lib/yard/server/library_version.rb
       #   YARD::Server::LibraryVersion
+      #
       # @return [{String=>[YARD::Server::LibraryVersion]}]
       def libraries
         GEMS.each_with_object({}) do |lib, a|
@@ -93,11 +100,14 @@ module Piktur
 
       private
 
-        # Path to development directory
+        # Returns the path to the development directory
+        #
         # @param [String] path
+        #
         # @return [Pathname]
         def _local_source(path)
-          Pathname(::Dir["#{ENV['DEV_HOME']}/*/{piktur/#{path},gems/#{path},#{path}}"][0])
+          existent = ::Dir["#{ENV['DEV_HOME']}/*/{piktur/#{path},gems/#{path},#{path}}"][0]
+          Pathname(existent)
         end
 
     end

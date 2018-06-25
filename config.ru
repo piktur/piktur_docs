@@ -2,6 +2,8 @@
 
 require_relative './lib/piktur/docs'
 
+load 'bin/env'
+
 use Rack::Session::Cookie, secret: ENV.fetch('SECRET_KEY_BASE')
 
 if ENV.fetch('RACK_ENV', 'development') == 'production'
