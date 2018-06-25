@@ -1,0 +1,8 @@
+#!/usr/bin/env ruby
+# frozen_string_literal: true
+
+begin
+  load Gem.bin_path('piktur', 'console')
+rescue Gem::Exception
+  load File.join(ENV.fetch('PIKTUR_HOME'), 'piktur/bin/console')
+end
