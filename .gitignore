@@ -9,3 +9,5 @@ log/*
 /piktur**/*.css
 /piktur**/*.js
 /*/README.markdown
+.yardoc/*
+doc/*
