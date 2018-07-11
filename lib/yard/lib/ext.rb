@@ -34,8 +34,6 @@ module YARD
 
       module Concerns; end
 
-      module ActiveRecord; end
-
     end
 
   end
@@ -48,7 +46,6 @@ root = File.expand_path File.dirname(__FILE__)
 $LOAD_PATH << root unless $LOAD_PATH.include? root
 
 require_relative './handlers/ruby/concerns.rb'
-require_relative './handlers/ruby/active_record/scope_handler.rb'
 
 YARD::Tags::Library.define_directive 'schema',    YARD::Tags::SchemaDirective
 YARD::Tags::Library.define_directive 'endschema', YARD::Tags::EndSchemaDirective

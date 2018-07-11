@@ -9,7 +9,6 @@ Build documentation for Piktur libraries locally with:
 
 ```sh
   rake yard:all
-  rake yard:all OPTS='--override --default --opts'
   rake yard:piktur_core
 ```
 

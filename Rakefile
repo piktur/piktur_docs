@@ -18,13 +18,14 @@ end
 def add_local_yardopts(path, options = [])
   path     = Pathname(path)
   yardopts = path.join('.yardopts')
+
   return unless yardopts.exist?
-  yardopts.each_line.with_object(options) do |ln, a|
-    a.push(*ln.split(/\s/))
-  end
+
+  yardopts.each_line.with_object(options) { |e, a| a.push(*e.split(/\s/)) }
 end
 
 libraries = {}
+
 Piktur::Docs.libraries.each do |name, (libver)|
   # Access gem info with `libver.gemspec` ie. `libver.gemspec.version`
   next unless (path = libver.source_path)
@@ -37,9 +38,10 @@ namespace :yard do
     task name do
       # yardoc [options] [source_files [- extra_files]]
       # cmd = "yardoc #{default_yardopts.join(' ')} #{default_files.join(' ')}"
-      Open3.popen3('yardoc', chdir: path) do |i, o, e|
-        puts o.gets until o.eof?
-        puts e.gets until o.eof?
+
+      Open3.popen3('yardoc', chdir: path) do |_, stdout, stderr|
+        puts stdout.gets until o.eof?
+        puts stderr.gets until o.eof?
       end
     end
   end
@@ -47,5 +49,13 @@ namespace :yard do
   desc 'Generate YARD Documentation for all libraries'
   task :all do
     libraries.each_key { |name| Rake::Task["yard:#{name}"].invoke }
+  end
+
+  desc 'Generate YARD Documentation for '
+  task :concepts do
+    Open3.popen3("yardoc --query '!@api || @api.text.match?(/^(concept)$/)'", chdir: path) do |_, stdout, stderr|
+      puts stdout.gets until o.eof?
+      puts stderr.gets until o.eof?
+    end
   end
 end
