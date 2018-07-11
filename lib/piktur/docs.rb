@@ -9,11 +9,15 @@ module Piktur
 
   eager_load!
 
-  Security.install
+  extend Support::Container::Delegates
 
-  Piktur::Config.configure do |config|
+  self.container = Container.new
+
+  Config.configure do |config|
     config.services = %w(piktur piktur_core piktur_security)
   end
+
+  Security.install
 
   # @see https://bitbucket.org/piktur/piktur_core/issues/32 Git download example
   # @see https://bitbucket.org/snippets/piktur/84Bkj Piktur::Docs::App example
@@ -79,7 +83,7 @@ module Piktur
     # To **authenticate** include **JSON Web Token (JWT)** via
     #   * url    `?token=<token>`
     #   * header `Authorization: Bearer <token>`
-    [:Admin].each { |const| ::Piktur::UserProxy.call(const) }
+    [:Admin].each { |const| ::Piktur::UserProxy.call(const, :admin) }
 
     class << self
 
