@@ -49,6 +49,6 @@ gem 'piktur_api',               git:     "#{bb}/piktur/piktur_api.git",
 # gem 'piktur_blog',              git:     "#{bb}/piktur/piktur_blog.git",
 #                                 branch:  'master',
 #                                 require: false
-# gem 'piktur_client',            git:     "#{bb}/piktur/piktur_client.git",
+# gem 'piktur_sites',            git:     "#{bb}/piktur/piktur_sites.git",
 #                                 branch:  'master',
 #                                 require: false
