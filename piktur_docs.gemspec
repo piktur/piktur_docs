@@ -33,7 +33,7 @@ Gem::Specification.new do |s|
   # s.add_dependency 'piktur_blog',                       '0.0.1'
   # s.add_dependency 'piktur_client',                     '0.0.1'
   # s.add_dependency 'piktur_core',                       '0.0.1'
-  # s.add_dependency 'piktur_store',                      '0.0.1'
+  # s.add_dependency 'piktur_stores',                      '0.0.1'
   # s.add_dependency 'piktur',                            '0.0.1'
   # @!endgroup
 

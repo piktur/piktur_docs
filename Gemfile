@@ -8,7 +8,7 @@ source ENV['GEM_SOURCE']
 ruby ENV.fetch('RUBY_VERSION').sub('ruby-', '')
 
 # @note Bundler will load all matching `{,*,*/*}.gemspec`. Due to local directory structure
-#   `../piktur_admin.gemspec`, `../piktur_store.gemspec` etc. are parsed when running `bundle
+#   `../piktur_admin.gemspec`, `../piktur_stores.gemspec` etc. are parsed when running `bundle
 #   install` on the local dev machine. You may want to override `glob: '*.gemspec'` to avoid this.
 
 gem 'piktur',                   git:    "#{bb}/piktur/piktur.git",
@@ -34,7 +34,7 @@ end
 # gem 'gem_server',               git:     "#{bb}/piktur/gem_server.git",
 #                                 branch:  'ebs',
 #                                 require: false
-gem 'piktur_store',             git:     "#{bb}/piktur/piktur_store.git",
+gem 'piktur_stores',            git:     "#{bb}/piktur/piktur_stores.git",
                                 branch:  'master',
                                 require: false
 gem 'piktur_core',              git:     "#{bb}/piktur/piktur_core.git",
@@ -52,5 +52,3 @@ gem 'piktur_api',               git:     "#{bb}/piktur/piktur_api.git",
 # gem 'piktur_client',            git:     "#{bb}/piktur/piktur_client.git",
 #                                 branch:  'master',
 #                                 require: false
-
-
