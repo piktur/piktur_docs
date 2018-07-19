@@ -7,7 +7,7 @@ load 'bin/env'
 use Rack::Session::Cookie, secret: ENV.fetch('SECRET_KEY_BASE')
 
 if ENV.fetch('RACK_ENV', 'development') == 'production'
-  use(Rack::Auth::JWT, :Admin, domain: 'https://api.piktur.io/v1/token')
+  use(Rack::Auth::JWT, realm: :Admin, domain: 'https://api.piktur.io/v1/token')
 end
 
 # @see https://github.com/lsegal/yard/blob/master/lib/yard/server/rack_middleware.rb
