@@ -24,9 +24,6 @@ module Piktur
   # @example Piktur API
   #   /v1/admin/token?auth[email]=*&auth[password]=*
   #
-  # @example Generate token from console
-  #   Piktur::Security::JWT::Token.new(payload: User::Admin.first.to_jwt_claims)
-  #
   module Docs
 
     # Return absolute path to docs directory
