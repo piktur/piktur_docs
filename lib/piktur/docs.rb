@@ -9,8 +9,6 @@ module Piktur
 
   eager_load!
 
-  extend Support::Container::Delegates
-
   self.container = Container.new
 
   Config.configure do |config|
