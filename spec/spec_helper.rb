@@ -1,39 +1,9 @@
 # frozen_string_literal: true
 
-ENV['RAILS_ENV'] ||= 'test'
+APP_ROOT = Dir.pwd
+
+require 'piktur/spec/spec_helper'
+
+Piktur::Spec.init_coverage_reporting!
 
 require_relative '../lib/piktur/docs.rb'
-require 'pry'
-
-def root
-  Piktur::Docs::ROOT
-end
-
-RSpec.configure do |config|
-  config.expect_with :rspec do |expectations|
-    expectations.include_chain_clauses_in_custom_matcher_descriptions = true
-  end
-
-  # config.fixture_path = File.expand_path('fixtures', __dir__)
-
-  # config.infer_spec_type_from_file_location!
-
-  config.mock_with :rspec do |mocks|
-    mocks.verify_partial_doubles = true
-  end
-
-  config.shared_context_metadata_behavior = :apply_to_host_groups
-
-  config.filter_run_when_matching :focus
-
-  # config.example_status_persistence_file_path = 'spec/examples.txt'
-
-  config.disable_monkey_patching!
-
-  config.default_formatter = 'doc' if config.files_to_run.one?
-
-  config.profile_examples = 10
-
-  # config.order = :random
-  # Kernel.srand config.seed
-end
